@@ -1,0 +1,49 @@
+package com.infy.backend.service;
+
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
+import com.infy.backend.entity.UserEntity;
+import com.infy.backend.io.ProfileRequest;
+import com.infy.backend.io.ProfileResponse;
+import com.infy.backend.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class ProfileServiceImpl implements ProfileService {
+
+    private final UserRepository userRepository;
+
+    @Override
+    public ProfileResponse createProfile(ProfileRequest request) {
+        UserEntity newProfile = convertToUserEntity(request);
+        newProfile = userRepository.save(newProfile);
+        return convertToProfileResponse(newProfile);
+    }
+
+    private UserEntity convertToUserEntity(ProfileRequest request) {
+        return UserEntity.builder()
+                .email(request.getEmail())
+                .userId(UUID.randomUUID().toString())
+                .name(request.getName())
+                .password(request.getPassword())
+                .isAccountVerified(false)
+                .verifyOtp(null)
+                .verifyOtpExpireAt(0L)
+                .resetOtp(null)
+                .resetOtpExpireAt(0L)
+                .build();
+    }
+
+    private ProfileResponse convertToProfileResponse(UserEntity newProfile) {
+        return ProfileResponse.builder()
+                .userId(newProfile.getUserId())
+                .name(newProfile.getName())
+                .email(newProfile.getEmail())
+                .isAccountVerified(newProfile.getIsAccountVerified())
+                .build();
+    }
+}

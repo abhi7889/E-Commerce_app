@@ -1,12 +1,12 @@
-package com.infy.backend;
+// package com.infy.backend;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+// import org.springframework.web.bind.annotation.GetMapping;
+// import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-public class TestController {
-    @GetMapping("/hello")
-    public String hello() {
-        return "Backend is running!";
-    }
-}
+// @RestController
+// public class TestController {
+//     @GetMapping("/hello")
+//     public String hello() {
+//         return "Backend is running!";
+//     }
+// }
