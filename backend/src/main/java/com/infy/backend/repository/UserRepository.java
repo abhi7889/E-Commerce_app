@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.infy.backend.entity.UserEntity;
 
-public interface UserRepository extends JpaRepository<UserEntity,Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
+    Optional<UserEntity> findByEmail(String email);
 
-    Optional<UserEntity>findByEmail(String email);
+    Boolean existsByEmail(String email);
 }

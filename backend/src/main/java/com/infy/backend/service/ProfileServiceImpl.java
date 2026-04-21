@@ -2,7 +2,10 @@ package com.infy.backend.service;
 
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.infy.backend.entity.UserEntity;
 import com.infy.backend.io.ProfileRequest;
@@ -20,8 +23,12 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileResponse createProfile(ProfileRequest request) {
         UserEntity newProfile = convertToUserEntity(request);
-        newProfile = userRepository.save(newProfile);
-        return convertToProfileResponse(newProfile);
+        if (!userRepository.existsByEmail(request.getEmail())) {
+            newProfile = userRepository.save(newProfile);
+            return convertToProfileResponse(newProfile);
+        }
+
+        throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
     }
 
     private UserEntity convertToUserEntity(ProfileRequest request) {

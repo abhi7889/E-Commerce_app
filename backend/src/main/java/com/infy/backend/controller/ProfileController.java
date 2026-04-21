@@ -11,6 +11,7 @@ import com.infy.backend.io.ProfileRequest;
 import com.infy.backend.io.ProfileResponse;
 import com.infy.backend.service.ProfileService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -22,7 +23,7 @@ public class ProfileController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProfileResponse register(@RequestBody ProfileRequest request) {
+    public ProfileResponse register(@Valid @RequestBody ProfileRequest request) {
         ProfileResponse response = profileService.createProfile(request);
         // TODO: send welcome email
         return response;
