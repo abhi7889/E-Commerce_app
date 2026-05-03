@@ -1,0 +1,139 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.main--screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.right--side {
+  width: 55vw;
+  margin-left: 50px;
+  margin-top: 50px;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.login--image {
+  width: 45vw;
+  height: 100vh;
+}
+.side--image {
+  position: relative;
+}
+.fields
+{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.email
+{
+    width: 499px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    border: 2px solid #C2C2C2;
+    background: #FFF;
+}
+.email::placeholder
+{
+    padding-left: 20px;
+    color: #525252;
+    font-family: DM Sans;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 144.023%; /* 28.805px */
+}
+.password
+{
+    width: 499px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    border: 2px solid #C2C2C2;
+    background: #FFF;
+}
+.password::placeholder
+{
+    padding-left: 20px;
+    color: #525252;
+    font-family: DM Sans;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 144.023%; /* 28.805px */
+}
+.login--button
+{
+    width: 197px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    background: #ED5353;
+    border : none;
+    color: #FFF;
+    text-align: center;
+    font-family: DM Sans;
+    font-size: 22.793px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 144.023%; /* 40.028px */
+}
+.image-text {
+  position: absolute;
+  top: 10%;
+  left: 30%;
+  transform: translate(-25%, -50%);
+  color: #fff;
+  text-align: center;
+  font-family: DM Sans;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 122.023%;
+}
+.right--text
+{
+    color: #000;
+    text-align: center;
+    font-family: DM Sans;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 144.023%; /* 57.609px */
+}
+.right--text--below
+{
+    color: #525252;
+    text-align: center;
+    font-family: DM Sans;
+    font-size: 21px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 144.023%; /* 30.245px */
+}
+
+.label-text
+{
+    color: #525252;
+    font-family: DM Sans;
+    font-size: 16.852px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 139.688%; /* 23.541px */
+    letter-spacing: 0.137px;
+    margin-left: 20px;
+}
+.login-url
+{
+    font-family: DM Sans;
+    font-weight: 700;
+    cursor: pointer;
+}
