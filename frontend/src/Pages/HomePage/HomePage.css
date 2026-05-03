@@ -1,0 +1,48 @@
+.homepage-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
+
+.homepage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.logout-button {
+  background-color: #ff5f5f;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #e04949;
+}
+
+.hero-section {
+  padding: 36px 0;
+}
+
+.hero-section h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.hero-section p {
+  font-size: 1rem;
+  color: #555;
+}
+
