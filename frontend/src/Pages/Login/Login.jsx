@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AuthService from '../../services/AuthService';
 import './Login.css';
 
 const API_BASE_URL = 'http://localhost:8081/api/v1.0';
@@ -31,6 +32,7 @@ export default function Login() {
         throw new Error(data.message || data.error || 'Login failed');
       }
 
+      AuthService.setToken(data.token);
       setMessage('Login successful. Redirecting to homepage...');
       setError('');
       navigate('/home');
@@ -77,6 +79,16 @@ export default function Login() {
                 className="login-url"
               >
                 Create Account
+              </span>
+            </p>
+            <p className="login-caption">
+              <span
+                onClick={() => {
+                  navigate('/forgot-password');
+                }}
+                className="login-url"
+              >
+                Forgot Password?
               </span>
             </p>
           </div>

@@ -1,48 +1,167 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .homepage-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 24px;
-  font-family: Arial, sans-serif;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4c5aa7 0%, #5a3f84 100%);
+  padding: 0;
+  margin: 0;
+  font-family: 'DM Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .homepage-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 0;
-  border-bottom: 1px solid #ddd;
+  padding: 24px 40px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #222;
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .logout-button {
-  background-color: #ff5f5f;
+  background: linear-gradient(135deg, #4c5aa7 0%, #5a3f84 100%);
   color: white;
   border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
+  padding: 12px 28px;
+  border-radius: 10px;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 8px 16px rgba(255, 107, 107, 0.3);
+  transition: all 0.3s ease;
 }
 
 .logout-button:hover {
-  background-color: #e04949;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(255, 107, 107, 0.4);
+}
+
+.logout-button:active {
+  transform: translateY(0);
 }
 
 .hero-section {
-  padding: 36px 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 40px;
+  text-align: center;
+  color: white;
 }
 
 .hero-section h1 {
-  font-size: 2rem;
-  margin-bottom: 10px;
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: white;
+  line-height: 1.2;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .hero-section p {
-  font-size: 1rem;
-  color: #555;
+  font-size: 20px;
+  color: rgb(255, 255, 255);
+  margin-bottom: 40px;
+  font-weight: 500;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.hero-section > button {
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  color: white;
+  border: none;
+  padding: 16px 40px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(74, 222, 128, 0.3);
+  transition: all 0.3s ease;
+}
+
+.hero-section > button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(74, 222, 128, 0.4);
+}
+
+/* Product Grid */
+.products-section {
+  max-width: 930px;
+  margin: 0 auto;
+}
+.products-section h2 {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: white;
+  text-align: center;
+}
+.products-title {
+  color: white;
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.product-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+}
+
+.product-card h3 {
+    color: black;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.product-card p {
+    color: black;
+  font-size: 14px;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.product-price {
+  color: #4c5aa7;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
 }
 
