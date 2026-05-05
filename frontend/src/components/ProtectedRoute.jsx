@@ -1,21 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import AuthService from '../services/AuthService';
 
-const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem('jwtToken') || getCookie('jwt');
-
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
-};
-
-const getCookie = (name) => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-  return null;
-};
-
-export default ProtectedRoute;
+export default function ProtectedRoute({ children }) {
+  return AuthService.isAuthenticated() ? children : <Navigate to="/login" replace />;
+}

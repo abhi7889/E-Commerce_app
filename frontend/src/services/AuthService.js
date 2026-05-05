@@ -4,32 +4,20 @@ const AuthService = {
   },
 
   getToken: () => {
-    return localStorage.getItem('jwtToken') || getCookie('jwt');
+    return localStorage.getItem('jwtToken');
   },
 
   removeToken: () => {
     localStorage.removeItem('jwtToken');
-    clearCookie('jwt');
   },
 
   isAuthenticated: () => {
-    return !!AuthService.getToken();
+    return !!localStorage.getItem('jwtToken');
   },
 
   logout: () => {
-    AuthService.removeToken();
+    localStorage.removeItem('jwtToken');
   },
-};
-
-const getCookie = (name) => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-  return null;
-};
-
-const clearCookie = (name) => {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 };
 
 export default AuthService;

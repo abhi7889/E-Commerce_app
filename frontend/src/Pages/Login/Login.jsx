@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../../services/AuthService';
 import './Login.css';
@@ -11,6 +11,12 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (AuthService.isAuthenticated()) {
+      navigate('/home');
+    }
+  }, [navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,6 +34,7 @@ export default function Login() {
       });
 
       const data = await response.json();
+
       if (!response.ok) {
         throw new Error(data.message || data.error || 'Login failed');
       }
@@ -35,7 +42,7 @@ export default function Login() {
       AuthService.setToken(data.token);
       setMessage('Login successful. Redirecting to homepage...');
       setError('');
-      navigate('/home');
+      navigate('/home', { replace: true });
     } catch (err) {
       setError(err.message || 'Unable to login.');
       setMessage('');
@@ -47,6 +54,7 @@ export default function Login() {
       <div className="right--side">
         <h2 className="right--text">Welcome back</h2>
         <p className="right--text--below">Please sign in to continue</p>
+
         <form className="fields" onSubmit={handleSubmit}>
           <input
             className="email"
@@ -56,6 +64,7 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+
           <input
             className="password"
             type="password"
@@ -64,28 +73,28 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+
           <button type="submit" className="login--button">
             Sign In
           </button>
+
           {message && <p className="success-message">{message}</p>}
           {error && <p className="error-message">{error}</p>}
+
           <div className="login-register">
             <p className="login-caption">
               Don't have an account?{' '}
               <span
-                onClick={() => {
-                  navigate('/register');
-                }}
+                onClick={() => navigate('/register')}
                 className="login-url"
               >
                 Create Account
               </span>
             </p>
+
             <p className="login-caption">
               <span
-                onClick={() => {
-                  navigate('/forgot-password');
-                }}
+                onClick={() => navigate('/forgot-password')}
                 className="login-url"
               >
                 Forgot Password?
