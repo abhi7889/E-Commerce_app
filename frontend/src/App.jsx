@@ -1,13 +1,20 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Login from './Pages/Login/Login';
-import Register from './Pages/Register/Register';
-import ForgotPassword from './Pages/ForgotPassword/ForgotPassword';
-import HomePage from './Pages/HomePage/HomePage';
-import AddProduct from './Pages/Admin/AddProduct';
-import ProtectedRoute from './components/ProtectedRoute';
-import PublicRoute from './components/PublicRoute';
-
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import Login from "./Pages/Login/Login";
+import Register from "./Pages/Register/Register";
+import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
+import HomePage from "./Pages/HomePage/HomePage";
+import AddProduct from "./Pages/Admin/AddProduct";
+import ProtectedRoute from "./components/Routes/ProtectedRoute";
+import PublicRoute from "./components/Routes/PublicRoute";
+import ProductModal from "./components/ProductModel/ProductModal";
+import AuthService from "./services/AuthService";
+import ProductDetails from "./components/ProductDetails/ProductDetails";
 export default function App() {
   return (
     <Router>
@@ -49,7 +56,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-
+        <Route path="/products/:productId" element={<ProductDetails />} />
         <Route
           path="/admin/products"
           element={

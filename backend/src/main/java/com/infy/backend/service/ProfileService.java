@@ -5,4 +5,6 @@ import com.infy.backend.io.ProfileResponse;
 
 public interface ProfileService {
     ProfileResponse createProfile(ProfileRequest request);
+
+    ProfileResponse getUserByEmail(String email);
 }

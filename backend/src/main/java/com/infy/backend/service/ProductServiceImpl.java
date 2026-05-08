@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import com.infy.backend.entity.ProductEntity;
 import com.infy.backend.io.ProductRequest;
@@ -50,6 +52,41 @@ public class ProductServiceImpl implements ProductService {
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
+    }
+
+    @Override
+    public ProductResponse updateProduct(String productId, ProductRequest request) {
+        ProductEntity existingProduct = productRepository.findByProductId(productId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+
+        existingProduct.setName(request.getName());
+        existingProduct.setDescription(request.getDescription());
+        existingProduct.setPrice(request.getPrice());
+        existingProduct.setBrand(request.getBrand());
+        existingProduct.setCategory(request.getCategory());
+        existingProduct.setStock(request.getStock());
+        existingProduct.setImageUrl(request.getImageUrl());
+        existingProduct
+                .setIsActive(request.getIsActive() != null ? request.getIsActive() : existingProduct.getIsActive());
+
+        existingProduct = productRepository.save(existingProduct);
+        return mapToResponse(existingProduct);
+    }
+
+    @Override
+    public void deleteProduct(String productId) {
+        ProductEntity existingProduct = productRepository.findByProductId(productId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+
+        productRepository.delete(existingProduct);
+    }
+
+    @Override
+    public ProductResponse getProductById(String productId) {
+        ProductEntity product = productRepository.findByProductId(productId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+
+        return mapToResponse(product);
     }
 
     private ProductResponse mapToResponse(ProductEntity product) {

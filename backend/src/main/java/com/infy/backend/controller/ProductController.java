@@ -33,4 +33,21 @@ public class ProductController {
     public List<ProductResponse> getActiveProducts() {
         return productService.getActiveProducts();
     }
+
+    @GetMapping("/{productId}")
+    public ProductResponse getProductById(@PathVariable String productId) {
+        return productService.getProductById(productId);
+    }
+
+    @PutMapping("/{productId}")
+    public ProductResponse updateProduct(@PathVariable String productId,
+            @RequestBody ProductRequest request) {
+        return productService.updateProduct(productId, request);
+    }
+
+    @DeleteMapping("/{productId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable String productId) {
+        productService.deleteProduct(productId);
+    }
 }

@@ -54,4 +54,12 @@ public class ProfileServiceImpl implements ProfileService {
                 .isAccountVerified(newProfile.getIsAccountVerified())
                 .build();
     }
+
+    @Override
+    public ProfileResponse getUserByEmail(String email) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+
+        return convertToProfileResponse(user);
+    }
 }

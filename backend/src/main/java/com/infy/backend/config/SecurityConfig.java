@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -41,11 +42,13 @@ public class SecurityConfig {
                                 "/register",
                                 "/send-reset-otp",
                                 "/reset-password",
-                                "/logout",
-                                "/products/**")
+                                "/logout")
                         .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1.0/products/**").permitAll()
+                        .requestMatchers("/api/v1.0/cart/**").authenticated()
                         .anyRequest().authenticated())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .logout(AbstractHttpConfigurer::disable);
 
         return http.build();
