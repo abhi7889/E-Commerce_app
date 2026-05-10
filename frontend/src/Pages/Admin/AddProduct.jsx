@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import "./AddProduct.css";
 
 const API_BASE_URL = "http://localhost:8081/api/v1.0";
@@ -362,17 +363,22 @@ export default function AddProduct() {
                         <div className="action-buttons">
                           <button
                             type="button"
-                            className="edit-btn"
+                            className="icon-btn edit-btn"
                             onClick={() => handleEdit(product)}
+                            title="Edit product"
+                            aria-label="Edit product"
                           >
-                            Edit
+                            <FaEdit />
                           </button>
+
                           <button
                             type="button"
-                            className="delete-btn"
+                            className="icon-btn delete-btn"
                             onClick={() => handleDelete(product.productId)}
+                            title="Delete product"
+                            aria-label="Delete product"
                           >
-                            Delete
+                            <FaTrash />
                           </button>
                         </div>
                       </td>

@@ -7,7 +7,7 @@ import HomeHeader from "../HomeHeader/HomeHeader";
 
 const API_BASE_URL = "http://localhost:8081/api/v1.0";
 
-export default function ProductDetails() {
+export default function ProductDetails({ onCartUpdated }) {
   const { productId } = useParams();
   const navigate = useNavigate();
 
@@ -15,6 +15,7 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/products/${productId}`)
@@ -35,9 +36,27 @@ export default function ProductDetails() {
       });
   }, [productId]);
 
+  const loadCart = async () => {
+    try {
+      const data = await CartService.getCart();
+      if (Array.isArray(data)) setCartItems(data);
+      else if (Array.isArray(data.items)) setCartItems(data.items);
+      else if (Array.isArray(data.cartItems)) setCartItems(data.cartItems);
+      else setCartItems([]);
+    } catch (err) {
+      console.error("Failed to load cart", err);
+      setCartItems([]);
+    }
+  };
+
+  useEffect(() => {
+    if (AuthService.isAuthenticated()) {
+      loadCart();
+    }
+  }, []);
+
   const handleAddToCart = async () => {
     const token = AuthService.getToken?.();
-
     if (!token) {
       navigate("/login");
       return;
@@ -45,6 +64,12 @@ export default function ProductDetails() {
 
     try {
       await CartService.addToCart(product.productId, 1);
+      await loadCart();
+
+      if (onCartUpdated) {
+        onCartUpdated(`${product.name} added to cart`);
+      }
+
       setMessage(`${product.name} added to cart`);
       setTimeout(() => setMessage(""), 2000);
     } catch (err) {
@@ -53,6 +78,11 @@ export default function ProductDetails() {
       setTimeout(() => setError(""), 2000);
     }
   };
+
+  const cartCount = cartItems.reduce(
+    (sum, item) => sum + (item.quantity || 1),
+    0,
+  );
 
   if (loading) {
     return <p style={{ color: "white", textAlign: "center" }}>Loading...</p>;
@@ -70,7 +100,20 @@ export default function ProductDetails() {
 
   return (
     <>
-      <HomeHeader />
+      <HomeHeader
+        onLogout={() => {
+          AuthService.logout();
+          navigate("/login");
+        }}
+        onCartClick={() => navigate("/cart")}
+        onProfileClick={() => navigate("/profile")}
+        onOrdersClick={() => navigate("/orders")}
+        searchTerm=""
+        setSearchTerm={() => {}}
+        cartCount={cartCount}
+        userName="Abhishek Sharma"
+      />
+
       <div className="product-details-page">
         {message && <div className="cart-toast">{message}</div>}
         {error && product && (

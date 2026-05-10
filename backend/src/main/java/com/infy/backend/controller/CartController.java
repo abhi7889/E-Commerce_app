@@ -12,7 +12,7 @@ import com.infy.backend.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1.0/cart")
+@RequestMapping("/cart")
 @RequiredArgsConstructor
 public class CartController {
 

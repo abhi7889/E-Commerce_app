@@ -1,54 +1,28 @@
-import AuthService from "./AuthService";
-
-const API_BASE_URL = "http://localhost:8081/api/v1.0";
-
-const getAuthHeaders = () => {
-  const token = AuthService.getToken?.();
-  return {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
-};
+import { apiFetch } from "./api";
 
 const CartService = {
-  async addToCart(productId, quantity = 1) {
-    const response = await fetch(`${API_BASE_URL}/cart/items`, {
+  getCart: async () => {
+    return await apiFetch("/cart");
+  },
+
+  addToCart: async (productId, quantity = 1) => {
+    return await apiFetch("/cart/items", {
       method: "POST",
-      headers: getAuthHeaders(),
       body: JSON.stringify({ productId, quantity }),
     });
-
-    if (!response.ok) {
-      throw new Error("Failed to add to cart");
-    }
-
-    return response.json();
   },
 
-  async getCart() {
-    const response = await fetch(`${API_BASE_URL}/cart`, {
-      method: "GET",
-      headers: getAuthHeaders(),
+  updateCartItem: async (itemId, quantity) => {
+    return await apiFetch(`/cart/items/${itemId}`, {
+      method: "PUT",
+      body: JSON.stringify({ quantity }),
     });
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch cart");
-    }
-
-    return response.json();
   },
 
-  async removeCartItem(cartItemId) {
-    const response = await fetch(`${API_BASE_URL}/cart/items/${cartItemId}`, {
+  removeCartItem: async (itemId) => {
+    return await apiFetch(`/cart/items/${itemId}`, {
       method: "DELETE",
-      headers: getAuthHeaders(),
     });
-
-    if (!response.ok) {
-      throw new Error("Failed to remove cart item");
-    }
-
-    return true;
   },
 };
 

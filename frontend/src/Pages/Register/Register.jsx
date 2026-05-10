@@ -1,47 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 // import images from "../../assets/images";
-import './Register.css';
-import { useNavigate } from 'react-router-dom';
+import "./Register.css";
+import { useNavigate } from "react-router-dom";
 
-const API_BASE_URL = 'http://localhost:8081/api/v1.0';
+const API_BASE_URL = "http://localhost:8081/api/v1.0";
 
 export default function Register() {
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setMessage('');
-    setError('');
+    setMessage("");
+    setError("");
 
     try {
       const response = await fetch(`${API_BASE_URL}/register`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify({ name, email, password }),
       });
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || data.error || 'Registration failed.');
+        throw new Error(data.message || data.error || "Registration failed.");
       }
 
-      setMessage('Registration successful. Please log in.');
-      setError('');
-      setName('');
-      setEmail('');
-      setPassword('');
-      navigate('/login');
+      setMessage("Registration successful. Please log in.");
+      setError("");
+      setName("");
+      setEmail("");
+      setPassword("");
+      navigate("/login");
     } catch (err) {
-      setError(err.message || 'Unable to register.');
-      setMessage('');
+      setError(err.message || "Unable to register.");
+      setMessage("");
     }
   };
 
@@ -88,8 +88,8 @@ export default function Register() {
           {error && <p className="error-message">{error}</p>}
           <div className="login-register">
             <p className="login-caption">
-              Already have an account?{' '}
-              <span onClick={() => navigate('/login')} className="login-url">
+              Already have an account?{" "}
+              <span onClick={() => navigate("/login")} className="login-url">
                 Sign In
               </span>
             </p>

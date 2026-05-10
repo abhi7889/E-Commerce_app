@@ -1,0 +1,4 @@
+import { loadStripe } from "@stripe/stripe-js";
+
+export const stripePromise = loadStripe("pk_test_51N1wjkSDk7j2tFv0XSMkkaDE3CrD3YaYGmILidJEOLyBHGWxyjX4S9sI6qMsnf45lMHxetn2EdHZg0dZ6XBcSrFA00DpfPi3j0"
+);

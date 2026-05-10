@@ -1,0 +1,149 @@
+.payment-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7ff 0%, #eef2ff 100%);
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.payment-card {
+  width: 100%;
+  max-width: 760px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+}
+
+.payment-card h1 {
+  margin: 0 0 10px;
+  font-size: 2rem;
+  color: #16213e;
+}
+
+.payment-card h2 {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+  color: #16213e;
+}
+
+.payment-card p {
+  margin: 0 0 18px;
+  color: #5b6475;
+  line-height: 1.6;
+}
+
+.payment-summary {
+  margin-top: 24px;
+  background: #f8f9ff;
+  border: 1px solid #e4e8f3;
+  border-radius: 18px;
+  padding: 20px;
+}
+
+.payment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e8ecf4;
+  color: #24324a;
+  font-size: 0.98rem;
+}
+
+.payment-item:last-of-type {
+  border-bottom: none;
+}
+
+.payment-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 2px solid #dfe5f1;
+  font-size: 1.08rem;
+  color: #16213e;
+}
+
+.payment-error {
+  margin-top: 18px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #ffe3e3;
+  color: #c92a2a;
+  font-weight: 500;
+}
+
+.payment-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.payment-actions button,
+.pay-btn,
+.back-btn {
+  border: none;
+  border-radius: 14px;
+  padding: 14px 22px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-width: 170px;
+  transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pay-btn:hover,
+.back-btn:hover {
+  transform: translateY(-1px);
+}
+
+.pay-btn:disabled,
+.back-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.back-btn {
+  background: #172033;
+  color: #ffffff;
+}
+
+.pay-btn {
+  margin-top: 18px;
+  width: 100%;
+  background: linear-gradient(90deg, #6c63ff, #ff4ecb);
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(108, 99, 255, 0.25);
+}
+
+.stripe-form {
+  margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+  .payment-page {
+    padding: 24px 14px;
+    align-items: flex-start;
+  }
+
+  .payment-card {
+    padding: 24px 18px;
+    border-radius: 20px;
+  }
+
+  .payment-card h1 {
+    font-size: 1.7rem;
+  }
+
+  .payment-item,
+  .payment-total {
+    font-size: 0.95rem;
+  }
+}
