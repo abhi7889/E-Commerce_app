@@ -19,6 +19,9 @@ export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const isAdmin = user?.role === "ADMIN";
+
   const handleLogout = () => {
     AuthService.logout();
     navigate("/login");
@@ -124,7 +127,8 @@ export default function HomePage() {
         onProfileClick={() => navigate("/profile")}
         onOrdersClick={() => navigate("/myorders")}
         onAdminDashboardClick={() => navigate("/admin/products")}
-        userName="Abhishek Sharma"
+        userName={user?.name || "Abhishek Sharma"}
+        isAdmin={isAdmin}
       />
 
       <HeroSection />

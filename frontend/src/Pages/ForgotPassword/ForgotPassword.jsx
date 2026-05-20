@@ -1,73 +1,124 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './ForgotPassword.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./ForgotPassword.css";
 
-const API_BASE_URL = 'http://localhost:8081/api/v1.0';
+const API_BASE_URL = "http://localhost:8081/api/v1.0";
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [otp, setOtp] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [step, setStep] = useState(1);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const parseResponse = async (response) => {
+    const text = await response.text();
+    try {
+      return text ? JSON.parse(text) : {};
+    } catch {
+      return {};
+    }
+  };
 
   const handleSendOtp = async (event) => {
     event.preventDefault();
-    setMessage('');
-    setError('');
+    setMessage("");
+    setError("");
+
+    const trimmedEmail = email.trim();
+
+    if (!trimmedEmail) {
+      setError("Email is required");
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const response = await fetch(`${API_BASE_URL}/send-reset-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: trimmedEmail }),
       });
 
-      const data = await response.json();
+      const data = await parseResponse(response);
+
       if (!response.ok) {
-        throw new Error(data.message || 'Unable to send reset code');
+        throw new Error(data.message || "Unable to send reset code");
       }
 
-      setMessage(data.message || 'Reset code sent.');
+      setMessage(data.message || "Reset code sent.");
       setStep(2);
     } catch (err) {
-      setError(err.message || 'Unable to send reset code.');
+      setError(err.message || "Unable to send reset code.");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleResetPassword = async (event) => {
     event.preventDefault();
-    setMessage('');
-    setError('');
+    setMessage("");
+    setError("");
 
-    if (newPassword !== confirmPassword) {
-      setError('Passwords do not match');
+    const trimmedEmail = email.trim();
+    const trimmedOtp = otp.trim();
+
+    if (!trimmedEmail) {
+      setError("Email is required");
       return;
     }
 
+    if (!trimmedOtp) {
+      setError("OTP is required");
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    setLoading(true);
+
     try {
       const response = await fetch(`${API_BASE_URL}/reset-password`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, otp, newPassword }),
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: trimmedEmail,
+          otp: trimmedOtp,
+          newPassword,
+        }),
       });
 
-      const data = await response.json();
+      const data = await parseResponse(response);
+
       if (!response.ok) {
-        throw new Error(data.message || 'Unable to reset password');
+        throw new Error(data.message || "Unable to reset password");
       }
 
-      setMessage(data.message || 'Password updated successfully. Please sign in.');
-      setError('');
-      setOtp('');
-      setNewPassword('');
-      setConfirmPassword('');
+      setMessage(
+        data.message || "Password updated successfully. Please sign in.",
+      );
+      setError("");
+      setOtp("");
+      setNewPassword("");
+      setConfirmPassword("");
       setStep(3);
     } catch (err) {
-      setError(err.message || 'Unable to reset password.');
+      setError(err.message || "Unable to reset password.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -75,6 +126,7 @@ export default function ForgotPassword() {
     <div className="forgot-main-screen">
       <div className="forgot-card">
         <h2>Forgot Password</h2>
+
         {step === 1 && (
           <form className="forgot-form" onSubmit={handleSendOtp}>
             <label>Email</label>
@@ -84,9 +136,10 @@ export default function ForgotPassword() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={loading}
             />
-            <button type="submit" className="forgot-button">
-              Send Reset Code
+            <button type="submit" className="forgot-button" disabled={loading}>
+              {loading ? "Sending..." : "Send Reset Code"}
             </button>
           </form>
         )}
@@ -100,7 +153,9 @@ export default function ForgotPassword() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={loading}
             />
+
             <label>Reset Code</label>
             <input
               type="text"
@@ -108,7 +163,9 @@ export default function ForgotPassword() {
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
               required
+              disabled={loading}
             />
+
             <label>New Password</label>
             <input
               type="password"
@@ -116,7 +173,9 @@ export default function ForgotPassword() {
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required
+              disabled={loading}
             />
+
             <label>Confirm Password</label>
             <input
               type="password"
@@ -124,9 +183,11 @@ export default function ForgotPassword() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
+              disabled={loading}
             />
-            <button type="submit" className="forgot-button">
-              Reset Password
+
+            <button type="submit" className="forgot-button" disabled={loading}>
+              {loading ? "Resetting..." : "Reset Password"}
             </button>
           </form>
         )}
@@ -134,7 +195,10 @@ export default function ForgotPassword() {
         {step === 3 && (
           <div className="forgot-success">
             <p>Your password was reset successfully.</p>
-            <button className="forgot-button" onClick={() => navigate('/login')}>
+            <button
+              className="forgot-button"
+              onClick={() => navigate("/login")}
+            >
               Go to Login
             </button>
           </div>
@@ -144,7 +208,11 @@ export default function ForgotPassword() {
         {error && <p className="error-message">{error}</p>}
 
         <div className="forgot-links">
-          <button className="forgot-link" onClick={() => navigate('/login')}>
+          <button
+            className="forgot-link"
+            onClick={() => navigate("/login")}
+            type="button"
+          >
             Back to Login
           </button>
         </div>
