@@ -7,4 +7,6 @@ public interface ProfileService {
     ProfileResponse createProfile(ProfileRequest request);
 
     ProfileResponse getUserByEmail(String email);
+
+    ProfileResponse getCurrentUserProfile(String email);
 }

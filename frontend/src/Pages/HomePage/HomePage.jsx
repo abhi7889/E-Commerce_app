@@ -7,10 +7,17 @@ import "./HomePage.css";
 import HomeHeader from "../../components/HomeHeader/HomeHeader";
 import HeroSection from "../../components/HeroSection/HeroSection";
 import ProductList from "../../components/ProductList/ProductList";
+import Footer from "../../components/Footer/Footer";
+
+const API_BASE_URL = "http://localhost:8081/api/v1.0";
 
 export default function HomePage() {
   const navigate = useNavigate();
 
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const isAdmin = user?.role === "ADMIN";
+
+  const [displayName, setDisplayName] = useState(user?.name || "User");
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,9 +25,6 @@ export default function HomePage() {
   const [cartMessage, setCartMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const isAdmin = user?.role === "ADMIN";
 
   const handleLogout = () => {
     AuthService.logout();
@@ -56,13 +60,49 @@ export default function HomePage() {
     }
   };
 
+  const loadProfileName = async () => {
+    const token = AuthService.getToken();
+    if (!token) return;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/profile`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) return;
+
+      const data = await response.json();
+
+      if (data?.name) {
+        setDisplayName(data.name);
+
+        const existingUser = JSON.parse(localStorage.getItem("user") || "{}");
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            ...existingUser,
+            name: data.name,
+          }),
+        );
+      }
+    } catch (err) {
+      console.error("Failed to load profile name:", err);
+    }
+  };
+
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
       await loadProducts();
+
       if (AuthService.isAuthenticated()) {
-        await loadCart();
+        await Promise.all([loadCart(), loadProfileName()]);
       }
+
       setLoading(false);
     };
 
@@ -127,7 +167,7 @@ export default function HomePage() {
         onProfileClick={() => navigate("/profile")}
         onOrdersClick={() => navigate("/myorders")}
         onAdminDashboardClick={() => navigate("/admin/products")}
-        userName={user?.name || "Abhishek Sharma"}
+        userName={displayName}
         isAdmin={isAdmin}
       />
 
@@ -141,6 +181,7 @@ export default function HomePage() {
         error={error}
         onCartUpdated={handleCartUpdated}
       />
+      <Footer />
     </div>
   );
 }

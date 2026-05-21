@@ -74,7 +74,7 @@ export default function OrderSuccess() {
 
           <button
             className="success-btn primary-btn"
-            onClick={() => navigate("/orders")}
+            onClick={() => navigate("/myorders")}
           >
             View My Orders
           </button>

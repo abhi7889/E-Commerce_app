@@ -62,4 +62,15 @@ public class ProfileServiceImpl implements ProfileService {
 
         return convertToProfileResponse(user);
     }
+
+    @Override
+    public ProfileResponse getCurrentUserProfile(String email) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return ProfileResponse.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .build();
+    }
 }

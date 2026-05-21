@@ -27,7 +27,8 @@ export default function HomeHeader({
       .toUpperCase()
       .slice(0, 2);
   };
-
+  console.log("HomeHeader userName:", userName);
+  console.log("HomeHeader initials:", getInitials(userName));
   return (
     <header className="homepage-header">
       <div className="logo">E-Commerce</div>
@@ -67,7 +68,8 @@ export default function HomeHeader({
             className="user-button"
             onClick={() => setShowDropdown((prev) => !prev)}
           >
-            {getInitials(userName)}
+            <span className="user-avatar">{getInitials(userName)}</span>
+
             <FaChevronDown className="dropdown-icon" />
           </button>
 

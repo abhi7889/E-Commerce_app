@@ -19,6 +19,7 @@ import CheckoutPage from "./Pages/CheckoutPage/CheckoutPage";
 import OrderSuccess from "./Pages/OrderSuccess/OrderSuccess";
 import PaymentPage from "./Pages/PaymentPage/PaymentPage";
 import MyOrders from "./Pages/MyOrders/MyOrders";
+import Profile from "./Pages/Profile/Profile";
 
 export default function App() {
   return (
@@ -113,7 +114,14 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/admin/products"
           element={

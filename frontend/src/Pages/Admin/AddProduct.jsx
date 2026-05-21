@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import AuthService from "../../services/AuthService";
 import "./AddProduct.css";
 
 const API_BASE_URL = "http://localhost:8081/api/v1.0";
@@ -85,6 +86,8 @@ export default function AddProduct() {
     setLoading(true);
 
     try {
+      const token = AuthService.getToken();
+
       const url = editingProductId
         ? `${API_BASE_URL}/products/${editingProductId}`
         : `${API_BASE_URL}/products`;
@@ -95,6 +98,7 @@ export default function AddProduct() {
         method,
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           ...formData,
@@ -103,29 +107,25 @@ export default function AddProduct() {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error(
-          editingProductId
-            ? "Failed to update product"
-            : "Failed to create product",
-        );
-      }
+      const text = await response.text();
+      console.log("Update response status:", response.status);
+      console.log("Update response body:", text);
 
-      await response.json();
+      if (!response.ok) {
+        throw new Error(text || "Failed to save product");
+      }
 
       setMessage(
         editingProductId
           ? "Product updated successfully"
           : "Product added successfully",
       );
+
       resetForm();
       fetchProducts();
-    } catch {
-      setError(
-        editingProductId
-          ? "Failed to update product"
-          : "Failed to save product",
-      );
+    } catch (err) {
+      console.error("Submit error:", err);
+      setError(err.message || "Failed to save product");
     } finally {
       setLoading(false);
     }
@@ -154,21 +154,27 @@ export default function AddProduct() {
     if (!confirmDelete) return;
 
     try {
+      const token = AuthService.getToken();
+
       const response = await fetch(`${API_BASE_URL}/products/${productId}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete product");
+        const text = await response.text();
+        throw new Error(text || "Failed to delete product");
       }
 
       setMessage("Product deleted successfully");
       fetchProducts();
-    } catch {
-      setError("Failed to delete product");
+    } catch (err) {
+      console.error("Delete error:", err);
+      setError(err.message || "Failed to delete product");
     }
   };
-
   return (
     <div className="admin-page">
       <header className="admin-header">
