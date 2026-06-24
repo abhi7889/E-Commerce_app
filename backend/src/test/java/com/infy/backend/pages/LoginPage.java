@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class LoginPage {
 
@@ -27,11 +28,7 @@ public class LoginPage {
 
     public void open(String baseUrl) {
         driver.get(baseUrl + "/login");
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         wait.until(webDriver -> ((JavascriptExecutor) webDriver)
                 .executeScript("return document.readyState")
                 .equals("complete"));
@@ -67,14 +64,36 @@ public class LoginPage {
     public void login(String email, String password) {
         enterEmail(email);
         enterPassword(password);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         clickLogin();
-    }
-
-    public String getErrorMessage() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage)).getText().trim();
     }
 
     public boolean isLoginPageDisplayed() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(loginHeading)).isDisplayed();
+    }
+
+    public boolean isErrorMessageDisplayed() {
+        List<WebElement> elements = driver.findElements(errorMessage);
+        return !elements.isEmpty() && elements.get(0).isDisplayed();
+    }
+
+    public String getErrorMessageIfPresent() {
+        List<WebElement> elements = driver.findElements(errorMessage);
+        if (elements.isEmpty()) {
+            return "";
+        }
+        return elements.get(0).getText().trim();
+    }
+
+    public String getEmailValidationMessage() {
+        return driver.findElement(emailInput).getAttribute("validationMessage");
+    }
+
+    public String getPasswordValidationMessage() {
+        return driver.findElement(passwordInput).getAttribute("validationMessage");
     }
 }
