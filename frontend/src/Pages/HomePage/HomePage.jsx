@@ -154,7 +154,7 @@ export default function HomePage() {
   );
 
   return (
-    <div className="homepage-container">
+    <div className="homepage-shell">
       <HomeHeader
         onLogout={handleLogout}
         cartCount={cartCount}
@@ -171,16 +171,21 @@ export default function HomePage() {
         isAdmin={isAdmin}
       />
 
-      <HeroSection />
+      <main className="homepage-scroll-area">
+        <div className="homepage-content">
+          <HeroSection />
 
-      {cartMessage && <div className="cart-toast">{cartMessage}</div>}
+          {cartMessage && <div className="cart-toast">{cartMessage}</div>}
 
-      <ProductList
-        products={filteredProducts}
-        loading={loading}
-        error={error}
-        onCartUpdated={handleCartUpdated}
-      />
+          <ProductList
+            products={filteredProducts}
+            loading={loading}
+            error={error}
+            onCartUpdated={handleCartUpdated}
+          />
+        </div>
+      </main>
+
       <Footer />
     </div>
   );

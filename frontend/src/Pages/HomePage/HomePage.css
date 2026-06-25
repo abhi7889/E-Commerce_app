@@ -4,24 +4,48 @@
   box-sizing: border-box;
 }
 
-.homepage-container {
-   width: 100vw;
-  min-height: 92vh;
-  position: relative;
-  background-color: #f1f1f1;
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
   font-family: 'DM Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
+.homepage-shell {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
 
+.homepage-scroll-area {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #f1f1f1;
+  scroll-behavior: smooth;
+}
 
+.homepage-content {
+  width: 100%;
+  min-height: 100%;
+}
 
 /* Product Grid */
 .products-section {
-  width: 100vw;
-  max-width: 100vw;
+  width: 100%;
+  max-width: 1440px;
   margin: 0 auto;
+  padding: 0 20px 24px;
   overflow-x: hidden;
 }
+
 .products-section h2 {
   font-size: 32px;
   font-weight: 800;
@@ -30,29 +54,32 @@
   text-align: center;
 }
 
-
 .products-grid {
-  padding: 10px 20px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   width: 100%;
-  box-sizing: border-box;
   justify-items: center;
   overflow-x: hidden;
 }
 
 @media (max-width: 1200px) {
   .products-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
 @media (max-width: 800px) {
   .products-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
 @media (max-width: 520px) {
+  .products-section {
+    padding: 0 12px 20px;
+  }
+
   .products-grid {
     grid-template-columns: 1fr;
   }
@@ -73,13 +100,13 @@
 }
 
 .product-card h3 {
-    color: black;
+  color: black;
   font-size: 20px;
   margin-bottom: 8px;
 }
 
 .product-card p {
-    color: black;
+  color: black;
   font-size: 14px;
   margin-bottom: 16px;
   line-height: 1.6;
@@ -150,7 +177,7 @@
 
 .cart-toast {
   position: fixed;
-  top: 100px;
+  top: 95px;
   right: 24px;
   background: #111827;
   color: white;
@@ -255,5 +282,11 @@
 
   .product-modal-info h2 {
     font-size: 24px;
+  }
+
+  .cart-toast {
+    right: 12px;
+    left: 12px;
+    top: 140px;
   }
 }

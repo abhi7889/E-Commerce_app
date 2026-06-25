@@ -31,7 +31,7 @@ export default function HomeHeader({
   console.log("HomeHeader initials:", getInitials(userName));
   return (
     <header className="homepage-header">
-      <div className="logo">E-Commerce</div>
+      <div className="logo">TechStore</div>
 
       <div className="header-search">
         <FaSearch className="search-icon" />
