@@ -138,7 +138,7 @@ export default function ProductDetails({ onCartUpdated }) {
             <p className="details-category">{product.category}</p>
             <h1>{product.name}</h1>
             <p className="details-description">{product.description}</p>
-            <p className="details-price">₹ {product.price}</p>
+            <p className="details-price">Price : ₹ {product.price}</p>
 
             <button className="add-cart-btn" onClick={handleAddToCart}>
               Add to Cart

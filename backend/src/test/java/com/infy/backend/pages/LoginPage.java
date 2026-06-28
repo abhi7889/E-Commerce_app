@@ -77,16 +77,23 @@ public class LoginPage {
     }
 
     public boolean isErrorMessageDisplayed() {
-        List<WebElement> elements = driver.findElements(errorMessage);
-        return !elements.isEmpty() && elements.get(0).isDisplayed();
+        try {
+            WebElement errorElement = wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(errorMessage));
+            return errorElement.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public String getErrorMessageIfPresent() {
-        List<WebElement> elements = driver.findElements(errorMessage);
-        if (elements.isEmpty()) {
+        try {
+            WebElement errorElement = wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(errorMessage));
+            return errorElement.getText().trim();
+        } catch (Exception e) {
             return "";
         }
-        return elements.get(0).getText().trim();
     }
 
     public String getEmailValidationMessage() {
