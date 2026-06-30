@@ -15,6 +15,7 @@ export default function HomeHeader({
   categories = [],
   userName = "Abhishek Sharma",
   cartCount = 0,
+  isAdmin = false,
 }) {
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -27,8 +28,7 @@ export default function HomeHeader({
       .toUpperCase()
       .slice(0, 2);
   };
-  console.log("HomeHeader userName:", userName);
-  console.log("HomeHeader initials:", getInitials(userName));
+
   return (
     <header className="homepage-header">
       <div className="logo">TechStore</div>
@@ -69,7 +69,6 @@ export default function HomeHeader({
             onClick={() => setShowDropdown((prev) => !prev)}
           >
             <span className="user-avatar">{getInitials(userName)}</span>
-
             <FaChevronDown className="dropdown-icon" />
           </button>
 
@@ -93,14 +92,16 @@ export default function HomeHeader({
                 My Orders
               </button>
 
-              <button
-                onClick={() => {
-                  setShowDropdown(false);
-                  onAdminDashboardClick?.();
-                }}
-              >
-                Admin Dashboard
-              </button>
+              {isAdmin && (
+                <button
+                  onClick={() => {
+                    setShowDropdown(false);
+                    onAdminDashboardClick?.();
+                  }}
+                >
+                  Admin Dashboard
+                </button>
+              )}
 
               <button
                 onClick={() => {

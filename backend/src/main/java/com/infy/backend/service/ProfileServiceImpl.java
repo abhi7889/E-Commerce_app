@@ -38,6 +38,7 @@ public class ProfileServiceImpl implements ProfileService {
                 .userId(UUID.randomUUID().toString())
                 .name(request.getName())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .role("USER")
                 .isAccountVerified(false)
                 .verifyOtp(null)
                 .verifyOtpExpireAt(0L)
@@ -71,6 +72,7 @@ public class ProfileServiceImpl implements ProfileService {
         return ProfileResponse.builder()
                 .name(user.getName())
                 .email(user.getEmail())
+                .role(user.getRole())
                 .build();
     }
 }

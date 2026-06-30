@@ -1,51 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import AuthService from '../../services/AuthService';
-import './Login.css';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AuthService from "../../services/AuthService";
+import "./Login.css";
 
-const API_BASE_URL = 'http://localhost:8081/api/v1.0';
+const API_BASE_URL = "http://localhost:8081/api/v1.0";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (AuthService.isAuthenticated()) {
-      navigate('/home');
+      navigate("/home");
     }
   }, [navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setMessage('');
-    setError('');
+    setMessage("");
+    setError("");
 
     try {
       const response = await fetch(`${API_BASE_URL}/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || data.error || 'Login failed');
+        throw new Error(data.message || data.error || "Login failed");
       }
 
       AuthService.setToken(data.token);
-      setMessage('Login successful. Redirecting to homepage...');
-      setError('');
-      navigate('/home', { replace: true });
+      AuthService.setUser({
+        email: data.email,
+        name: data.name || "",
+        role: data.role || "USER",
+      });
+
+      setMessage("Login successful. Redirecting to homepage...");
+      setError("");
+      navigate("/home", { replace: true });
     } catch (err) {
-      setError(err.message || 'Unable to login.');
-      setMessage('');
+      setError(err.message || "Unable to login.");
+      setMessage("");
     }
   };
 
@@ -83,18 +89,15 @@ export default function Login() {
 
           <div className="login-register">
             <p className="login-caption">
-              Don't have an account?{' '}
-              <span
-                onClick={() => navigate('/register')}
-                className="login-url"
-              >
+              Don't have an account?{" "}
+              <span onClick={() => navigate("/register")} className="login-url">
                 Create Account
               </span>
             </p>
 
             <p className="login-caption">
               <span
-                onClick={() => navigate('/forgot-password')}
+                onClick={() => navigate("/forgot-password")}
                 className="login-url"
               >
                 Forgot Password?

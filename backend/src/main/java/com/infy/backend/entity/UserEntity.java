@@ -34,7 +34,9 @@ public class UserEntity {
 
     @Column(unique = true)
     private String email;
-
+    @Column(nullable = false)
+    @Builder.Default
+    private String role = "USER";
     private String password;
     private String verifyOtp;
     private Boolean isAccountVerified;

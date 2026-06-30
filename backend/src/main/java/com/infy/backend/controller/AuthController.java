@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.infy.backend.entity.UserEntity;
 import com.infy.backend.io.AuthRequest;
 import com.infy.backend.io.AuthResponse;
+import com.infy.backend.repository.UserRepository;
 import com.infy.backend.service.AppUserDetailsService;
 import com.infy.backend.util.JwtUtil;
 
@@ -28,24 +30,34 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final AppUserDetailsService appUserDetailsService;
-
+    private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         try {
             authenticate(request.getEmail(), request.getPassword());
+
             final UserDetails userDetails = appUserDetailsService.loadUserByUsername(request.getEmail());
             final String jwtToken = jwtUtil.generateToken(userDetails);
+
             ResponseCookie cookie = ResponseCookie.from("jwt", jwtToken)
                     .httpOnly(true)
                     .path("/")
                     .maxAge(10 * 60 * 60)
                     .sameSite("Strict")
                     .build();
+
+            UserEntity user = userRepository.findByEmail(request.getEmail())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
             return ResponseEntity.ok()
                     .header("Set-Cookie", cookie.toString())
-                    .body(new AuthResponse(request.getEmail(), jwtToken));
+                    .body(new AuthResponse(
+                            user.getEmail(),
+                            jwtToken,
+                            user.getName(),
+                            user.getRole()));
 
         } catch (BadCredentialsException ex) {
             Map<String, Object> error = new HashMap<>();

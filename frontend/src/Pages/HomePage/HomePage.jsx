@@ -14,7 +14,7 @@ const API_BASE_URL = "http://localhost:8081/api/v1.0";
 export default function HomePage() {
   const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const user = AuthService.getUser();
   const isAdmin = user?.role === "ADMIN";
 
   const [displayName, setDisplayName] = useState(user?.name || "User");
@@ -77,17 +77,20 @@ export default function HomePage() {
 
       const data = await response.json();
 
-      if (data?.name) {
-        setDisplayName(data.name);
+      if (data?.name || data?.role) {
+        const existingUser = AuthService.getUser();
+        const updatedUser = {
+          ...existingUser,
+          name: data?.name || existingUser.name,
+          role: data?.role || existingUser.role,
+          email: data?.email || existingUser.email,
+        };
 
-        const existingUser = JSON.parse(localStorage.getItem("user") || "{}");
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            ...existingUser,
-            name: data.name,
-          }),
-        );
+        if (data?.name) {
+          setDisplayName(data.name);
+        }
+
+        AuthService.setUser(updatedUser);
       }
     } catch (err) {
       console.error("Failed to load profile name:", err);

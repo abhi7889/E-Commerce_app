@@ -84,6 +84,27 @@ public class CartServiceImpl implements CartService {
                 cartRepository.save(cart);
         }
 
+        @Override
+        public CartResponse updateCartItemQuantity(String userId, Long cartItemId, Integer quantity) {
+                if (quantity == null || quantity < 1) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quantity must be at least 1");
+                }
+
+                CartEntity cart = cartRepository.findByUserId(userId)
+                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found"));
+
+                CartItemEntity item = cart.getItems().stream()
+                                .filter(cartItem -> cartItem.getId().equals(cartItemId))
+                                .findFirst()
+                                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                                "Cart item not found"));
+
+                item.setQuantity(quantity);
+
+                cart = cartRepository.save(cart);
+                return mapToCartResponse(cart);
+        }
+
         private CartResponse mapToCartResponse(CartEntity cart) {
                 List<CartItemResponse> itemResponses = cart.getItems().stream()
                                 .map(item -> {

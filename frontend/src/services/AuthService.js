@@ -1,22 +1,31 @@
 const AuthService = {
-  setToken: (token) => {
-    localStorage.setItem('jwtToken', token);
+  setToken(token) {
+    localStorage.setItem("token", token);
   },
 
-  getToken: () => {
-    return localStorage.getItem('jwtToken');
+  getToken() {
+    return localStorage.getItem("token");
   },
 
-  removeToken: () => {
-    localStorage.removeItem('jwtToken');
+  setUser(user) {
+    localStorage.setItem("user", JSON.stringify(user));
   },
 
-  isAuthenticated: () => {
-    return !!localStorage.getItem('jwtToken');
+  getUser() {
+    try {
+      return JSON.parse(localStorage.getItem("user") || "{}");
+    } catch {
+      return {};
+    }
   },
 
-  logout: () => {
-    localStorage.removeItem('jwtToken');
+  isAuthenticated() {
+    return !!localStorage.getItem("token");
+  },
+
+  logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   },
 };
 
