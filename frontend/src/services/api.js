@@ -1,6 +1,6 @@
 import AuthService from "./AuthService";
 
-const API_BASE_URL = "http://localhost:8081/api/v1.0";
+const API_BASE_URL = "https://e-commerceapp.up.railway.app/api/v1.0";
 
 export async function apiFetch(endpoint, options = {}) {
   const token = AuthService.getToken();
