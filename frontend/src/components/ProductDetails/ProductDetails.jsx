@@ -5,7 +5,7 @@ import CartService from "../../services/CartService";
 import "./ProductDetails.css";
 import HomeHeader from "../HomeHeader/HomeHeader";
 
-const API_BASE_URL = "http://localhost:8081/api/v1.0";
+const API_BASE_URL = "https://e-commerceapp.up.railway.app/api/v1.0";
 
 export default function ProductDetails({ onCartUpdated }) {
   const { productId } = useParams();
