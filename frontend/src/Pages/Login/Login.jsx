@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
 import "./Login.css";
 
-const API_BASE_URL = "http://localhost:8081/api/v1.0";
+const API_BASE_URL = "https://e-commerceapp.up.railway.app/api/v1.0";
 
 export default function Login() {
   const navigate = useNavigate();

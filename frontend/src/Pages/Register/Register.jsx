@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import "./Register.css";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE_URL = "http://localhost:8081/api/v1.0";
+const API_BASE_URL = "https://e-commerceapp.up.railway.app/api/v1.0";
 
 export default function Register() {
   const navigate = useNavigate();
